@@ -181,7 +181,7 @@ app.delete('/api/users/:id', async (req: Request, res: Response) => {
       `,
       [id]
     )
-    console.log(result)
+    // console.log(result)
 
     result.rowCount === 0 &&
       res.status(404).json({
