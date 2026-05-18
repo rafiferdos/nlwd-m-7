@@ -125,6 +125,15 @@ app.get('/api/users/:id', async (req: Request, res: Response) => {
   }
 })
 
+
+//*=== update a user ===*//
+
+app.put('/api/users/:id', async (req: Request, res: Response) => {
+  const { id } = req.params
+  const { name, password, email, is_active } = req.body
+  
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
