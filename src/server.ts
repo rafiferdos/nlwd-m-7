@@ -125,13 +125,34 @@ app.get('/api/users/:id', async (req: Request, res: Response) => {
   }
 })
 
-
 //*=== update a user ===*//
 
 app.put('/api/users/:id', async (req: Request, res: Response) => {
   const { id } = req.params
-  const { name, password, email, is_active } = req.body
-  
+  const { name, password, age, is_active } = req.body
+
+  const result = await pool.query(
+    `
+      UPDATE users SET name=$1,password=$2,age=$3,is_active=$4
+      WHERE id=$5 RETURNING *
+    `,
+    [name, password, age, is_active, id]
+  )
+  console.log('🚀 ~ result:', result)
+
+  try {
+    res.status(200).json({
+      success: true,
+      message: 'user updated',
+      data: result.rows[0]
+    })
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error?.message,
+      error: error
+    })
+  }
 })
 
 app.listen(port, () => {
