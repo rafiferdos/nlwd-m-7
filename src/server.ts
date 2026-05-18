@@ -71,6 +71,8 @@ app.post('/api/users', async (req: Request, res: Response) => {
   }
 })
 
+//*=== get all users ===*//
+
 app.get('/api/users', async (req: Request, res: Response) => {
   try {
     const result = await pool.query(`
@@ -80,6 +82,32 @@ app.get('/api/users', async (req: Request, res: Response) => {
       success: true,
       message: 'all user fetch success',
       data: result.rows
+    })
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error?.message,
+      error: error
+    })
+  }
+})
+
+//*=== get single user ===*//
+
+app.get('/api/users/:id', async (req: Request, res: Response) => {
+  const { id } = req.params
+  try {
+    const result = await pool.query(
+      `
+        SELECT * FROM users WHERE id=$1 
+      `,
+      [id]
+    )
+
+    res.status(200).json({
+      success: true,
+      message: 'found single user',
+      data: result.rows[0]
     })
   } catch (error: any) {
     res.status(500).json({
