@@ -43,7 +43,10 @@ app.get('/', (req: Request, res: Response) => {
     creator: 'rafiferdos'
   })
 })
-app.post('/', async (req: Request, res: Response) => {
+
+//*=== create user ===*//
+
+app.post('/api/users', async (req: Request, res: Response) => {
   try {
     const { name, email, password, age } = req.body
     const result = await pool.query(
@@ -55,16 +58,32 @@ app.post('/', async (req: Request, res: Response) => {
     console.log('🚀 ~ result:', result)
 
     res.status(201).json({
+      success: true,
       message: 'created',
-      data: {
-        name,
-        email,
-        password,
-        age
-      }
+      data: result.rows[0]
     })
   } catch (error: any) {
     res.status(500).json({
+      success: false,
+      message: error?.message,
+      error: error
+    })
+  }
+})
+
+app.get('/api/users', async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(`
+        SELECT * FROM users 
+      `)
+    res.status(200).json({
+      success: true,
+      message: 'all user fetch success',
+      data: result.rows
+    })
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
       message: error?.message,
       error: error
     })
