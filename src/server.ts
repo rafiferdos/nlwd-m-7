@@ -3,7 +3,7 @@ import { Pool } from 'pg'
 import config from './config/index.js'
 
 const app: Application = express()
-const port = 5000
+const port = config.port
 
 app.use(express.json())
 app.use(express.text())
