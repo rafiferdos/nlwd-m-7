@@ -1,4 +1,6 @@
 import express, { type Application, type Request, type Response } from 'express'
+import {Pool} from 'pg'
+
 const app: Application = express()
 const port = 5000
 
