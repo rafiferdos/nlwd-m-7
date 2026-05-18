@@ -138,7 +138,13 @@ app.put('/api/users/:id', async (req: Request, res: Response) => {
     `,
     [name, password, age, is_active, id]
   )
-  console.log('🚀 ~ result:', result)
+  // console.log('🚀 ~ result:', result)
+  result.rows.length === 0 &&
+    res.status(404).json({
+      success: false,
+      message: 'user not found',
+      data: {}
+    })
 
   try {
     res.status(200).json({
