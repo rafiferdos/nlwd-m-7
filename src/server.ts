@@ -51,7 +51,10 @@ app.post('/api/users', async (req: Request, res: Response) => {
     const { name, email, password, age } = req.body
     const result = await pool.query(
       `
-      INSERT INTO users(name, email, password, age) VALUES($1, $2, $3, $4) RETURNING * 
+      INSERT INTO
+      users(name, email, password, age)
+      VALUES($1, $2, $3, $4)
+      RETURNING *
     `,
       [name, email, password, age]
     )
@@ -99,7 +102,8 @@ app.get('/api/users/:id', async (req: Request, res: Response) => {
   try {
     const result = await pool.query(
       `
-        SELECT * FROM users WHERE id=$1 
+        SELECT * FROM users
+        WHERE id=$1
       `,
       [id]
     )
@@ -157,6 +161,38 @@ app.put('/api/users/:id', async (req: Request, res: Response) => {
       success: true,
       message: 'user updated',
       data: result.rows[0]
+    })
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error?.message,
+      error: error
+    })
+  }
+})
+
+//*=== delete a user ===*//
+app.delete('/api/users/:id', async (req: Request, res: Response) => {
+  const { id } = req.params
+  try {
+    const result = await pool.query(
+      `
+        DELETE FROM users WHERE id=$1
+      `,
+      [id]
+    )
+    console.log(result)
+
+    result.rowCount === 0 &&
+      res.status(404).json({
+        success: false,
+        message: 'user not found',
+        data: {}
+      })
+
+    res.status(200).json({
+      success: true,
+      message: 'user removed'
     })
   } catch (error: any) {
     res.status(500).json({
