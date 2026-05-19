@@ -10,7 +10,7 @@ app.use(express.text())
 app.use(express.urlencoded({ extended: true }))
 
 // call database
-initDatabase()
+// initDatabase()
 
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
