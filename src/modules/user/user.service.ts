@@ -32,7 +32,7 @@ const getSingleUserFromDB = async (id: number) => {
       `,
     [id]
   )
-  return result.rows[0]
+  return result
 }
 
 const updateSingleUserOnDB = async (id: number, payload: IUser) => {
