@@ -21,7 +21,7 @@ const getAllFromDB = async () => {
       SELECT * FROM users 
     `
   )
-  return result
+  return result.rows
 }
 
 const getByIdFromDB = async (id: number) => {
@@ -32,7 +32,7 @@ const getByIdFromDB = async (id: number) => {
     `,
     [id]
   )
-  return result
+  return result.rows[0]
 }
 
 const updateInDB = async (id: number, payload: IUser) => {
@@ -51,7 +51,7 @@ const updateInDB = async (id: number, payload: IUser) => {
     `,
     [name, password, age, is_active, id]
   )
-  return result
+  return result.rows[0]
 }
 
 const deleteFromDB = async (id: number) => {
@@ -61,7 +61,7 @@ const deleteFromDB = async (id: number) => {
     `,
     [id]
   )
-  return result
+  return result.rowCount
 }
 
 export const userService = {

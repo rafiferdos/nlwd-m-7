@@ -25,7 +25,7 @@ const getAllUsers = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: 'all user fetch success',
-      data: result.rows
+      data: result
     })
   } catch (error: any) {
     res.status(500).json({
@@ -50,7 +50,7 @@ const getUserById = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: 'found single user',
-      data: result.rows[0]
+      data: result
     })
   } catch (error: any) {
     res.status(500).json({
@@ -75,7 +75,7 @@ const updateUser = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: 'user updated',
-      data: result.rows[0]
+      data: result
     })
   } catch (error: any) {
     res.status(500).json({
@@ -88,9 +88,9 @@ const updateUser = async (req: Request, res: Response) => {
 
 const deleteUser = async (req: Request, res: Response) => {
   const { id } = req.params
-  const result = await userService.deleteFromDB(Number(id))
+  const rowCount = await userService.deleteFromDB(Number(id))
   try {
-    result.rowCount === 0 &&
+    rowCount === 0 &&
       res.status(404).json({
         success: false,
         message: 'user not found',
