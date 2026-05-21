@@ -15,6 +15,16 @@ const createUserIntoDB = async (userData: IUser) => {
   return result.rows[0]
 }
 
+const getAllUsersFromDB = async () => {
+  const result = await pool.query(
+    `
+      SELECT * FROM users 
+    `
+  )
+  return result.rows
+}
+
 export const userService = {
-  createUserIntoDB
+  createUserIntoDB,
+  getAllUsersFromDB
 }
