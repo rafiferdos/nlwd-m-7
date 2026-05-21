@@ -13,7 +13,7 @@ const createUser = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: error?.message,
+      message: error?.message || 'internal server error',
       error: error
     })
   }
@@ -37,15 +37,16 @@ const getAllUsers = async (req: Request, res: Response) => {
 }
 
 const getUserById = async (req: Request, res: Response) => {
-  const { id } = req.params
   try {
+    const { id } = req.params
     const result = await userService.getByIdFromDB(Number(id))
-    result.rows.length === 0 &&
-      res.status(404).json({
+    if (!result) {
+      return res.status(404).json({
         success: false,
         message: 'user not found',
         data: {}
       })
+    }
 
     res.status(200).json({
       success: true,
@@ -62,16 +63,17 @@ const getUserById = async (req: Request, res: Response) => {
 }
 
 const updateUser = async (req: Request, res: Response) => {
-  const result = await userService.updateInDB(Number(req.params.id), req.body)
-
-  result.rows.length === 0 &&
-    res.status(404).json({
-      success: false,
-      message: 'user not found',
-      data: {}
-    })
-
   try {
+    const result = await userService.updateInDB(Number(req.params.id), req.body)
+
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: 'user not found',
+        data: {}
+      })
+    }
+
     res.status(200).json({
       success: true,
       message: 'user updated',
@@ -87,20 +89,27 @@ const updateUser = async (req: Request, res: Response) => {
 }
 
 const deleteUser = async (req: Request, res: Response) => {
-  const { id } = req.params
-  const rowCount = await userService.deleteFromDB(Number(id))
   try {
-    rowCount === 0 &&
-      res.status(404).json({
-        success: false,
-        message: 'user not found',
-        data: {}
-      })
+    const { id } = req.params
+    const rowCount = await userService.deleteFromDB(Number(id))
+    // if (rowCount === 0) {
+    //   return res.status(404).json({
+    //     success: false,
+    //     message: 'user not found',
+    //     data: {}
+    //   })
+    // }
+    // res.status(200).json({
+    //   success: true,
+    //   message: 'user removed'
+    // })
 
-    res.status(200).json({
-      success: true,
-      message: 'user removed'
-    })
+    return rowCount === 0
+      ? res
+          .status(404)
+          .json({ success: false, message: 'user not found', data: {} })
+      : res.status(200).json({ success: true, message: 'user removed' })
+    
   } catch (error: any) {
     res.status(500).json({
       success: false,
