@@ -29,45 +29,7 @@ app.get('/api/users/:id', userController.getSingleUser)
 
 //*=== update a user ===*//
 
-app.put('/api/users/:id', async (req: Request, res: Response) => {
-  const { id } = req.params
-  const { name, password, age, is_active } = req.body
-
-  const result = await pool.query(
-    `
-      UPDATE users
-      SET name=COALESCE($1, name),
-      password=COALESCE($2, password),
-      age=COALESCE($3, age),
-      is_active=COALESCE($4, is_active)
-      
-      WHERE id=$5
-      RETURNING *
-    `,
-    [name, password, age, is_active, id]
-  )
-  // console.log('🚀 ~ result:', result)
-  result.rows.length === 0 &&
-    res.status(404).json({
-      success: false,
-      message: 'user not found',
-      data: {}
-    })
-
-  try {
-    res.status(200).json({
-      success: true,
-      message: 'user updated',
-      data: result.rows[0]
-    })
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error?.message,
-      error: error
-    })
-  }
-})
+app.put('/api/users/:id', userController.updateSingleUser)
 
 //*=== delete a user ===*//
 app.delete('/api/users/:id', async (req: Request, res: Response) => {
