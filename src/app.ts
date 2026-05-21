@@ -1,6 +1,6 @@
 import express, { type Application, type Request, type Response } from 'express'
 import config from './config/index.js'
-import { initDatabase, pool } from './db/index.js'
+import { pool } from './db/index.js'
 import { userRoute } from './modules/user/user.route.js'
 
 const app: Application = express()
@@ -21,7 +21,6 @@ app.get('/', (req: Request, res: Response) => {
     creator: 'rafiferdos'
   })
 })
-
 
 //*=== get all users ===*//
 
