@@ -20,6 +20,11 @@ export const initDatabase = async () => {
           updated_at TIMESTAMP DEFAULT NOW()
         )
       `)
+
+    await pool.query(`
+        
+      `)
+
     console.log('🚀 db is running...')
   } catch (error) {
     console.log(error)
