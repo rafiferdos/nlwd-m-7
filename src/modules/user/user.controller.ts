@@ -37,7 +37,7 @@ const getAllUsers = async (req: Request, res: Response) => {
 }
 
 const getSingleUser = async (req: Request, res: Response) => {
-  ;async (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const { id } = req.params
     try {
       const result = await userService.getSingleUserFromDB(Number(id))
@@ -69,7 +69,6 @@ const updateSingleUser = async (req: Request, res: Response) => {
     req.body
   )
 
-  // console.log('🚀 ~ result:', result)
   result.rows.length === 0 &&
     res.status(404).json({
       success: false,
