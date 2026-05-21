@@ -7,9 +7,9 @@ const router = Router()
 router.post('/', userController.createUser)
 
 //*=== get all users ===*//
-router.get('/api/users', userController.getAllUsers)
+router.get('/', userController.getAllUsers)
 
 //*=== get single user ===*//
-router.get('/api/users/:id', userController.getSingleUser)
+router.get('/:id', userController.getSingleUser)
 
 export const userRoute: Router = router
