@@ -4,11 +4,12 @@ import { userController } from './user.controller.js'
 const router = Router()
 
 //*=== create user ===*//
-
 router.post('/', userController.createUser)
 
 //*=== get all users ===*//
-
 router.get('/api/users', userController.getAllUsers)
+
+//*=== get single user ===*//
+router.get('/api/users/:id', userController.getSingleUser)
 
 export const userRoute: Router = router
