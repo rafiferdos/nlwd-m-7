@@ -1,7 +1,7 @@
 import { pool } from '../../db/index.js'
 import type { IUser } from './user.interface.js'
 
-const createUserIntoDB = async (userData: IUser) => {
+const createIntoDB = async (userData: IUser) => {
   const { name, email, password, age } = userData
   const result = await pool.query(
     `
@@ -15,7 +15,7 @@ const createUserIntoDB = async (userData: IUser) => {
   return result.rows[0]
 }
 
-const getAllUsersFromDB = async () => {
+const getAllFromDB = async () => {
   const result = await pool.query(
     `
       SELECT * FROM users 
@@ -24,7 +24,7 @@ const getAllUsersFromDB = async () => {
   return result
 }
 
-const getSingleUserFromDB = async (id: number) => {
+const getByIdFromDB = async (id: number) => {
   const result = await pool.query(
     `
       SELECT * FROM users
@@ -35,7 +35,7 @@ const getSingleUserFromDB = async (id: number) => {
   return result
 }
 
-const updateSingleUserOnDB = async (id: number, payload: IUser) => {
+const updateInDB = async (id: number, payload: IUser) => {
   const { name, password, age, is_active } = payload
 
   const result = await pool.query(
@@ -54,7 +54,7 @@ const updateSingleUserOnDB = async (id: number, payload: IUser) => {
   return result
 }
 
-const deleteSingleUserFromDB = async (id: number) => {
+const deleteFromDB = async (id: number) => {
   const result = await pool.query(
     `
       DELETE FROM users WHERE id=$1
@@ -65,9 +65,9 @@ const deleteSingleUserFromDB = async (id: number) => {
 }
 
 export const userService = {
-  createUserIntoDB,
-  getAllUsersFromDB,
-  getSingleUserFromDB,
-  updateSingleUserOnDB,
-  deleteSingleUserFromDB
+  createUserIntoDB: createIntoDB,
+  getAllUsersFromDB: getAllFromDB,
+  getSingleUserFromDB: getByIdFromDB,
+  updateSingleUserOnDB: updateInDB,
+  deleteSingleUserFromDB: deleteFromDB
 }

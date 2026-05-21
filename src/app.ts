@@ -24,13 +24,13 @@ app.get('/', (req: Request, res: Response) => {
 
 //*=== get single user ===*//
 
-app.get('/api/users/:id', userController.getSingleUser)
+app.get('/api/users/:id', userController.getUserById)
 
 //*=== update a user ===*//
 
-app.put('/api/users/:id', userController.updateSingleUser)
+app.put('/api/users/:id', userController.updateUser)
 
 //*=== delete a user ===*//
-app.delete('/api/users/:id', userController.deleteSingleUser)
+app.delete('/api/users/:id', userController.deleteUser)
 
 export default app

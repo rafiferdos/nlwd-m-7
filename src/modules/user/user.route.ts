@@ -10,12 +10,12 @@ router.post('/', userController.createUser)
 router.get('/', userController.getAllUsers)
 
 //*=== get single user ===*//
-router.get('/:id', userController.getSingleUser)
+router.get('/:id', userController.getUserById)
 
 //*=== update a user ===*//
-router.put('/:id', userController.updateSingleUser)
+router.put('/:id', userController.updateUser)
 
 //*=== delete a user ===*//
-router.delete('/:id', userController.deleteSingleUser)
+router.delete('/:id', userController.deleteUser)
 
 export const userRoute: Router = router
