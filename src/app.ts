@@ -1,8 +1,7 @@
 import express, { type Application, type Request, type Response } from 'express'
 import config from './config/index.js'
-import { pool } from './db/index.js'
-import { userRoute } from './modules/user/user.route.js'
 import { userController } from './modules/user/user.controller.js'
+import { userRoute } from './modules/user/user.route.js'
 
 const app: Application = express()
 const port = config.port
@@ -32,35 +31,6 @@ app.get('/api/users/:id', userController.getSingleUser)
 app.put('/api/users/:id', userController.updateSingleUser)
 
 //*=== delete a user ===*//
-app.delete('/api/users/:id', async (req: Request, res: Response) => {
-  const { id } = req.params
-  try {
-    const result = await pool.query(
-      `
-        DELETE FROM users WHERE id=$1
-      `,
-      [id]
-    )
-    // console.log(result)
-
-    result.rowCount === 0 &&
-      res.status(404).json({
-        success: false,
-        message: 'user not found',
-        data: {}
-      })
-
-    res.status(200).json({
-      success: true,
-      message: 'user removed'
-    })
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error?.message,
-      error: error
-    })
-  }
-})
+app.delete('/api/users/:id', userController.deleteSingleUser)
 
 export default app

@@ -27,9 +27,9 @@ const getAllUsersFromDB = async () => {
 const getSingleUserFromDB = async (id: number) => {
   const result = await pool.query(
     `
-        SELECT * FROM users
-        WHERE id=$1
-      `,
+      SELECT * FROM users
+      WHERE id=$1
+    `,
     [id]
   )
   return result
@@ -54,9 +54,20 @@ const updateSingleUserOnDB = async (id: number, payload: IUser) => {
   return result
 }
 
+const deleteSingleUserFromDB = async (id: number) => {
+  const result = await pool.query(
+    `
+      DELETE FROM users WHERE id=$1
+    `,
+    [id]
+  )
+  return result
+}
+
 export const userService = {
   createUserIntoDB,
   getAllUsersFromDB,
   getSingleUserFromDB,
-  updateSingleUserOnDB
+  updateSingleUserOnDB,
+  deleteSingleUserFromDB
 }
