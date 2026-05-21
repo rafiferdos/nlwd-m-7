@@ -3,7 +3,7 @@ import { userService } from './user.service.js'
 
 const createUser = async (req: Request, res: Response) => {
   try {
-    const result = await userService.createUserIntoDB(req.body)
+    const result = await userService.createIntoDB(req.body)
 
     res.status(201).json({
       success: true,
@@ -21,7 +21,7 @@ const createUser = async (req: Request, res: Response) => {
 
 const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const result = await userService.getAllUsersFromDB()
+    const result = await userService.getAllFromDB()
     res.status(200).json({
       success: true,
       message: 'all user fetch success',
@@ -39,7 +39,7 @@ const getAllUsers = async (req: Request, res: Response) => {
 const getUserById = async (req: Request, res: Response) => {
   const { id } = req.params
   try {
-    const result = await userService.getSingleUserFromDB(Number(id))
+    const result = await userService.getByIdFromDB(Number(id))
     result.rows.length === 0 &&
       res.status(404).json({
         success: false,
@@ -62,10 +62,7 @@ const getUserById = async (req: Request, res: Response) => {
 }
 
 const updateUser = async (req: Request, res: Response) => {
-  const result = await userService.updateSingleUserOnDB(
-    Number(req.params.id),
-    req.body
-  )
+  const result = await userService.updateInDB(Number(req.params.id), req.body)
 
   result.rows.length === 0 &&
     res.status(404).json({
@@ -91,7 +88,7 @@ const updateUser = async (req: Request, res: Response) => {
 
 const deleteUser = async (req: Request, res: Response) => {
   const { id } = req.params
-  const result = await userService.deleteSingleUserFromDB(Number(id))
+  const result = await userService.deleteFromDB(Number(id))
   try {
     result.rowCount === 0 &&
       res.status(404).json({
