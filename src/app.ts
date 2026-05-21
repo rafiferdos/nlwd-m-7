@@ -1,6 +1,7 @@
 import express, { type Application, type Request, type Response } from 'express'
 import config from './config/index.js'
 import { initDatabase, pool } from './db/index.js'
+import { userRoute } from './modules/user/user.route.js'
 
 const app: Application = express()
 const port = config.port
@@ -12,6 +13,8 @@ app.use(express.urlencoded({ extended: true }))
 // call database
 // initDatabase()
 
+app.use('/api/users', userRoute)
+
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
     message: 'server is ongoing',
@@ -19,35 +22,6 @@ app.get('/', (req: Request, res: Response) => {
   })
 })
 
-//*=== create user ===*//
-
-app.post('/api/users', async (req: Request, res: Response) => {
-  try {
-    const { name, email, password, age } = req.body
-    const result = await pool.query(
-      `
-      INSERT INTO
-      users(name, email, password, age)
-      VALUES($1, $2, $3, $4)
-      RETURNING *
-    `,
-      [name, email, password, age]
-    )
-    console.log('🚀 ~ result:', result)
-
-    res.status(201).json({
-      success: true,
-      message: 'created',
-      data: result.rows[0]
-    })
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error?.message,
-      error: error
-    })
-  }
-})
 
 //*=== get all users ===*//
 
