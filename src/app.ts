@@ -1,7 +1,8 @@
 import express, { type Application, type Request, type Response } from 'express'
 import config from './config/index.js'
-import { userRoute } from './modules/user/user.route.js'
+import { authRoute } from './modules/auth/auth.route.js'
 import { profileRoute } from './modules/profile/profile.route.js'
+import { userRoute } from './modules/user/user.route.js'
 
 const app: Application = express()
 const port = config.port
@@ -15,6 +16,9 @@ app.use('/api/users', userRoute)
 
 //* profile route
 app.use('/api/profiles', profileRoute)
+
+//* auth route
+app.use('/api/auth', authRoute)
 
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
