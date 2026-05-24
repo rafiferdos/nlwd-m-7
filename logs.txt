@@ -11,3 +11,4 @@ method -> GET | url -> /api/users | time -> 1779622199392
 method -> GET | url -> /api/users | time -> 1779622299072
 method -> GET | url -> /api/users | time -> 1779622565753
 method -> GET | url -> /api/users | time -> 1779622570444
+method -> GET | url -> /api/users/1 | time -> 1779623226641
