@@ -5,9 +5,17 @@ const loginUser = async (req: Request, res: Response) => {
   try {
     const result = await authService.loginIntoDB(req.body)
 
+    const { refreshToken } = result
+
+    res.cookie('refreshToken', refreshToken, {
+      secure: false,
+      httpOnly: true,
+      sameSite: 'lax'
+    })
+
     res.status(200).json({
       success: true,
-      message: 'user got good',
+      message: 'user login done',
       data: result
     })
   } catch (error: any) {

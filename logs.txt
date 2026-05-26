@@ -51,3 +51,4 @@ method -> GET | url -> /api/users | time -> 1779784627883
 method -> POST | url -> /api/auth/login | time -> 1779784669598
 method -> GET | url -> /api/users | time -> 1779784681826
 method -> GET | url -> /api/users | time -> 1779784726439
+method -> POST | url -> /api/auth/login | time -> 1779786377075
