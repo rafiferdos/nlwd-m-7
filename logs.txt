@@ -37,3 +37,17 @@ method -> GET | url -> /api/users | time -> 1779641979207
 method -> GET | url -> /api/users | time -> 1779642126725
 method -> GET | url -> /api/users | time -> 1779642136330
 method -> GET | url -> /api/users | time -> 1779642238611
+method -> POST | url -> /api/users | time -> 1779783293840
+method -> POST | url -> /api/users | time -> 1779783357643
+method -> POST | url -> /api/users | time -> 1779783549443
+method -> POST | url -> /api/users | time -> 1779783663255
+method -> POST | url -> /api/users | time -> 1779783728341
+method -> GET | url -> /api/users | time -> 1779784207864
+method -> POST | url -> /api/auth/login | time -> 1779784218353
+method -> GET | url -> /api/users | time -> 1779784240704
+method -> POST | url -> /api/auth/login | time -> 1779784589274
+method -> GET | url -> /api/users | time -> 1779784600628
+method -> GET | url -> /api/users | time -> 1779784627883
+method -> POST | url -> /api/auth/login | time -> 1779784669598
+method -> GET | url -> /api/users | time -> 1779784681826
+method -> GET | url -> /api/users | time -> 1779784726439

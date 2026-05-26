@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import auth from '../../middleware/auth.js'
 import { userController } from './user.controller.js'
+import { UserRoles } from '../../types/index.js'
 
 const router = Router()
 
@@ -8,7 +9,7 @@ const router = Router()
 router.post('/', userController.createUser)
 
 //*=== get all users ===*//
-router.get('/', auth(), userController.getAllUsers)
+router.get('/', auth(UserRoles.admin, UserRoles.moderator), userController.getAllUsers)
 
 //*=== get single user ===*//
 router.get('/:id', userController.getUserById)

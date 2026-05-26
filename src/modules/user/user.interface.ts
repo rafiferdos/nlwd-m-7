@@ -1,3 +1,4 @@
+type Role = 'admin' | 'user' | 'moderator'
 export interface IUser {
   id: number
   name: string
@@ -5,4 +6,5 @@ export interface IUser {
   password: string
   age: number
   is_active?: boolean
+  role?: Role
 }
