@@ -28,3 +28,12 @@ method -> GET | url -> /api/users | time -> 1779625074647
 method -> GET | url -> /api/users | time -> 1779625098926
 method -> GET | url -> /api/users | time -> 1779625194111
 method -> GET | url -> /api/users | time -> 1779625208476
+method -> POST | url -> /api/auth/login | time -> 1779641837517
+method -> GET | url -> /api/users | time -> 1779641863985
+method -> GET | url -> /api/users | time -> 1779641896731
+method -> POST | url -> /api/auth/login | time -> 1779641944291
+method -> POST | url -> /api/auth/login | time -> 1779641956115
+method -> GET | url -> /api/users | time -> 1779641979207
+method -> GET | url -> /api/users | time -> 1779642126725
+method -> GET | url -> /api/users | time -> 1779642136330
+method -> GET | url -> /api/users | time -> 1779642238611
