@@ -1,11 +1,12 @@
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
 import express, { type Application, type Request, type Response } from 'express'
-import fs from 'fs'
 import config from './config/index.js'
+import globalErrorHandler from './middleware/globalErrorHandler.js'
+import logger from './middleware/logger.js'
 import { authRoute } from './modules/auth/auth.route.js'
 import { profileRoute } from './modules/profile/profile.route.js'
 import { userRoute } from './modules/user/user.route.js'
-import logger from './middleware/logger.js'
-import cookieParser from 'cookie-parser'
 
 const app: Application = express()
 const port = config.port
@@ -14,6 +15,11 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.text())
 app.use(express.urlencoded({ extended: true }))
+
+const corsOptions = {
+  origin: 'http://localhost:3000'
+}
+app.use(cors(corsOptions))
 
 app.use(logger)
 
@@ -32,5 +38,7 @@ app.get('/', (req: Request, res: Response) => {
     creator: 'rafiferdos'
   })
 })
+
+app.use(globalErrorHandler)
 
 export default app
