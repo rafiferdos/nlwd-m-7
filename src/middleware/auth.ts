@@ -3,6 +3,7 @@ import jwt, { type JwtPayload } from 'jsonwebtoken'
 import config from '../config/index.js'
 import { pool } from '../db/index.js'
 import type { Roles } from '../types/index.js'
+import sendResponse from '../utility/sendResponse.js'
 
 const auth = (...roles: Roles[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -11,8 +12,8 @@ const auth = (...roles: Roles[]) => {
       const token = req.headers.authorization
 
       if (!token) {
-        res.status(401).json({
-          success: false,
+        sendResponse(res, {
+          statusCode: 401,
           message: 'unauthorized'
         })
         return
@@ -31,21 +32,21 @@ const auth = (...roles: Roles[]) => {
       )
 
       if ((await userData).rows.length === 0)
-        return res.status(404).json({
-          success: false,
+        return sendResponse(res, {
+          statusCode: 404,
           message: 'user not found'
         })
 
       const user = (await userData).rows[0]
       if (!user?.is_active)
-        return res.status(403).json({
-          success: false,
+        return sendResponse(res, {
+          statusCode: 403,
           message: 'forbidden'
         })
 
       if (roles.length && !roles.includes(user.role))
-        return res.status(403).json({
-          success: false,
+        return sendResponse(res, {
+          statusCode: 403,
           message: 'forbidden'
         })
 
