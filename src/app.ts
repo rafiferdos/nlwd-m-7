@@ -5,10 +5,12 @@ import { authRoute } from './modules/auth/auth.route.js'
 import { profileRoute } from './modules/profile/profile.route.js'
 import { userRoute } from './modules/user/user.route.js'
 import logger from './middleware/logger.js'
+import cookieParser from 'cookie-parser'
 
 const app: Application = express()
 const port = config.port
 
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.text())
 app.use(express.urlencoded({ extended: true }))
