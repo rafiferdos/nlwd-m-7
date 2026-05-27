@@ -1,33 +1,48 @@
 import type { Response } from 'express'
 
-type TResponseData<T> = {
-  statusCode: number
-  success?: boolean
-  message?: string
-  meta?: {
-    page: number
-    limit: number
-    total: number
-  }
-  data?: T | null
-  error?: any
+type TMeta = {
+  page: number
+  limit: number
+  total: number
+  totalPages: number
 }
 
-const sendResponse = <T>(res: Response, data: TResponseData<T>) => {
-  // Auto-calculate success if not explicitly provided
-  const isSuccess =
-    data.success !== undefined
-      ? data.success
-      : data.statusCode >= 200 && data.statusCode < 300
+type TSuccessResponse<T> = {
+  statusCode: number
+  message?: string
+  data?: T | null
+  meta?: TMeta
+}
 
-  res.status(data.statusCode).json({
-    success: isSuccess,
-    message:
-      data.message || (isSuccess ? 'Operation successful' : 'Operation failed'),
-    meta: data.meta || undefined,
-    data: data.data || null,
-    error: data.error || null
-  })
+type TErrorResponse = {
+  statusCode: number
+  message: string
+  errors?: unknown
+}
+
+type TResponsePayload<T> = TSuccessResponse<T> | TErrorResponse
+
+const sendResponse = <T>(res: Response, payload: TResponsePayload<T>): void => {
+  const { statusCode, message } = payload
+  const success = statusCode >= 200 && statusCode < 300
+
+  // Base shape — no extra null fields on success
+  const body: Record<string, unknown> = {
+    success,
+    message: message ?? (success ? 'Success' : 'Failed'),
+    data: 'data' in payload ? (payload.data ?? null) : null,
+  }
+
+  if ('meta' in payload && payload.meta) {
+    body.meta = payload.meta
+  }
+
+  // errors field শুধু error response এ
+  if (!success && 'errors' in payload && payload.errors !== undefined) {
+    body.errors = payload.errors
+  }
+
+  res.status(statusCode).json(body)
 }
 
 export default sendResponse
