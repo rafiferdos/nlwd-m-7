@@ -1,7 +1,6 @@
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import express, { type Application, type Request, type Response } from 'express'
-import config from './config/index.js'
 import logger from './middleware/logger.js'
 import { authRoute } from './modules/auth/auth.route.js'
 import { profileRoute } from './modules/profile/profile.route.js'
@@ -9,7 +8,6 @@ import { userRoute } from './modules/user/user.route.js'
 import globalErrorHandler from './utility/globalErrorHandler.js'
 
 const app: Application = express()
-const port = config.port
 
 app.use(cookieParser())
 app.use(express.json())

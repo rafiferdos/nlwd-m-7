@@ -5,6 +5,7 @@ import sendResponse from './sendResponse.js'
 
 const isDev = process.env.NODE_ENV !== 'production'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, _next) => {
   // Zod validation error
   if (err instanceof ZodError) {
