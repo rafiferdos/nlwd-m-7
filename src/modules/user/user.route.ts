@@ -1,27 +1,29 @@
 import { Router } from 'express'
 import auth from '../../middleware/auth.js'
-import { userController } from './user.controller.js'
 import { UserRoles } from '../../types/index.js'
+import {
+  createUser,
+  deleteUser,
+  getAllUsers,
+  getUserById,
+  updateUser
+} from './user.controller.js'
 
 const router = Router()
 
 //*=== create user ===*//
-router.post('/', userController.createUser)
+router.post('/', createUser)
 
 //*=== get all users ===*//
-router.get(
-  '/',
-  auth(UserRoles.admin, UserRoles.moderator),
-  userController.getAllUsers
-)
+router.get('/', auth(UserRoles.admin, UserRoles.moderator), getAllUsers)
 
 //*=== get single user ===*//
-router.get('/:id', userController.getUserById)
+router.get('/:id', getUserById)
 
 //*=== update a user ===*//
-router.put('/:id', userController.updateUser)
+router.put('/:id', updateUser)
 
 //*=== delete a user ===*//
-router.delete('/:id', userController.deleteUser)
+router.delete('/:id', deleteUser)
 
 export const userRoute: Router = router

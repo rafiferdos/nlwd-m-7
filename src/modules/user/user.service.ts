@@ -69,9 +69,9 @@ const deleteFromDB = async (id: number) => {
 }
 
 export const userService = {
-  createIntoDB,
-  getAllFromDB,
-  getByIdFromDB,
-  updateInDB,
-  deleteFromDB
+  create: createIntoDB,
+  getAll: getAllFromDB,
+  getById: getByIdFromDB,
+  update: updateInDB,
+  delete: deleteFromDB
 }

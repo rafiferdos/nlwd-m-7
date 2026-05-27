@@ -3,122 +3,76 @@ import sendResponse from '../../utility/sendResponse.js'
 import { userService } from './user.service.js'
 
 const createUser = async (req: Request, res: Response) => {
-  try {
-    const result = await userService.createIntoDB(req.body)
+  const result = await userService.create(req.body)
 
-    sendResponse(res, {
-      statusCode: 201,
-      message: 'created',
-      data: result
-    })
-  } catch (error: any) {
-    sendResponse(res, {
-      statusCode: 500,
-      message: error?.message || 'internal server error',
-      error: error
-    })
-  }
+  sendResponse(res, {
+    statusCode: 201,
+    message: 'created',
+    data: result
+  })
 }
 
 const getAllUsers = async (req: Request, res: Response) => {
-  try {
-    const result = await userService.getAllFromDB()
-    sendResponse(res, {
-      statusCode: 200,
-      message: 'all user fetch success',
-      data: result
-    })
-  } catch (error: any) {
-    sendResponse(res, {
-      statusCode: 500,
-      message: error?.message,
-      error: error
-    })
-  }
+  const result = await userService.getAll()
+  sendResponse(res, {
+    statusCode: 200,
+    message: 'all user fetch success',
+    data: result
+  })
 }
 
 const getUserById = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params
-    const result = await userService.getByIdFromDB(Number(id))
-    if (!result) {
-      return sendResponse(res, {
-        statusCode: 404,
-        message: 'user not found',
-        data: {}
-      })
-    }
-
-    sendResponse(res, {
-      statusCode: 200,
-      message: 'found single user',
-      data: result
-    })
-  } catch (error: any) {
-    sendResponse(res, {
-      statusCode: 500,
-      message: error?.message,
-      error: error
+  const { id } = req.params
+  const result = await userService.getById(Number(id))
+  if (!result) {
+    return sendResponse(res, {
+      statusCode: 404,
+      message: 'user not found',
+      data: {}
     })
   }
+
+  sendResponse(res, {
+    statusCode: 200,
+    message: 'found single user',
+    data: result
+  })
 }
 
 const updateUser = async (req: Request, res: Response) => {
-  try {
-    const result = await userService.updateInDB(Number(req.params.id), req.body)
+  const result = await userService.update(Number(req.params.id), req.body)
 
-    if (!result) {
-      return sendResponse(res, {
-        statusCode: 404,
-        message: 'user not found',
-        data: {}
-      })
-    }
-
-    sendResponse(res, {
-      statusCode: 200,
-      message: 'user updated',
-      data: result
-    })
-  } catch (error: any) {
-    sendResponse(res, {
-      statusCode: 500,
-      message: error?.message,
-      error: error
+  if (!result) {
+    return sendResponse(res, {
+      statusCode: 404,
+      message: 'user not found',
+      data: {}
     })
   }
+
+  sendResponse(res, {
+    statusCode: 200,
+    message: 'user updated',
+    data: result
+  })
 }
 
 const deleteUser = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params
-    const rowCount = await userService.deleteFromDB(Number(id))
+  const { id } = req.params
+  const rowCount = await userService.delete(Number(id))
 
-    if (rowCount === 0) {
-      return sendResponse(res, {
-        statusCode: 404,
-        message: 'user not found',
-        data: {}
-      })
-    }
-
-    sendResponse(res, {
-      statusCode: 200,
-      message: 'user removed'
-    })
-  } catch (error: any) {
-    sendResponse(res, {
-      statusCode: 500,
-      message: error?.message,
-      error: error
+  if (rowCount === 0) {
+    return sendResponse(res, {
+      statusCode: 404,
+      message: 'user not found',
+      data: {}
     })
   }
+
+  sendResponse(res, {
+    statusCode: 200,
+    message: 'user removed'
+  })
 }
 
-export const userController = {
-  createUser,
-  getAllUsers,
-  getUserById,
-  updateUser,
-  deleteUser
-}
+export { createUser, deleteUser, getAllUsers, getUserById, updateUser }

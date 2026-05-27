@@ -1,4 +1,5 @@
 import { pool } from '../../db/index.js'
+import AppError from '../../utility/AppError.js'
 import type { IProfile } from './profile.interface.js'
 
 const createIntoDB = async (payload: IProfile) => {
@@ -11,9 +12,7 @@ const createIntoDB = async (payload: IProfile) => {
     [user_id]
   )
 
-  if (user.rows.length === 0) {
-    throw new Error('User not found')
-  }
+  if (user.rows.length === 0) throw new AppError(404, 'user not found')
 
   const result = await pool.query(
     `
@@ -26,5 +25,5 @@ const createIntoDB = async (payload: IProfile) => {
 }
 
 export const profileService = {
-  createIntoDB
+  create: createIntoDB
 }

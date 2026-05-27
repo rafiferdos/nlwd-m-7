@@ -30,7 +30,7 @@ const sendResponse = <T>(res: Response, payload: TResponsePayload<T>): void => {
   const body: Record<string, unknown> = {
     success,
     message: message ?? (success ? 'Success' : 'Failed'),
-    data: 'data' in payload ? (payload.data ?? null) : null,
+    data: 'data' in payload ? (payload.data ?? null) : null
   }
 
   if ('meta' in payload && payload.meta) {

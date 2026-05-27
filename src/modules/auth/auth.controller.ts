@@ -1,53 +1,33 @@
-import type { Request, Response } from 'express'
+import type { Request, RequestHandler, Response } from 'express'
 import sendResponse from '../../utility/sendResponse.js'
 import { authService } from './auth.service.js'
 
 const loginUser = async (req: Request, res: Response) => {
-  try {
-    const result = await authService.loginIntoDB(req.body)
+  const result = await authService.login(req.body)
+  const { refreshToken } = result
 
-    const { refreshToken } = result
-
-    res.cookie('refreshToken', refreshToken, {
-      secure: false,
-      httpOnly: true,
-      sameSite: 'lax'
-    })
-    sendResponse<{ accessToken: string; refreshToken: string }>(res, {
-      statusCode: 200,
-      success: true,
-      message: 'user login done',
-      data: result
-    })
-  } catch (error: any) {
-    sendResponse(res, {
-      statusCode: 500,
-      error: error
-    })
-  }
+  res.cookie('refreshToken', refreshToken, {
+    secure: false,
+    httpOnly: true,
+    sameSite: 'lax'
+  })
+  sendResponse(res, {
+    statusCode: 200,
+    message: 'user login done',
+    data: result
+  })
 }
 
 const refreshToken = async (req: Request, res: Response) => {
-  try {
-    const result = await authService.generateRefreshToken(
-      req.cookies.refreshToken
-    )
+  const result = await authService.generateRefreshToken(
+    req.cookies.refreshToken
+  )
 
-    sendResponse(res, {
-      statusCode: 200,
-      success: true,
-      message: 'access token done',
-      data: result
-    })
-  } catch (error: any) {
-    sendResponse(res, {
-      statusCode: 500,
-      error: error
-    })
-  }
+  sendResponse(res, {
+    statusCode: 200,
+    message: 'access token done',
+    data: result
+  })
 }
 
-export const authController = {
-  loginUser,
-  refreshToken
-}
+export { loginUser, refreshToken }

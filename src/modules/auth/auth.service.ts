@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs'
 import jwt, { type JwtPayload } from 'jsonwebtoken'
 import config from '../../config/index.js'
 import { pool } from '../../db/index.js'
+import AppError from '../../utility/AppError.js'
 
 const loginIntoDB = async (payload: { email: string; password: string }) => {
   const { email, password } = payload
@@ -11,13 +12,12 @@ const loginIntoDB = async (payload: { email: string; password: string }) => {
     `,
     [email]
   )
-
-  if (userData.rows.length === 0) throw new Error('invalid things entered')
+  if (userData.rows.length === 0)
+    throw new AppError(400, 'invalid things entered')
 
   const user = userData.rows[0]
-
   const matchedPassword = await bcrypt.compare(password, user.password)
-  if (!matchedPassword) throw new Error('invalid things entered')
+  if (!matchedPassword) throw new AppError(400, 'invalid things entered')
 
   const jwtPayload = {
     id: user.id,
@@ -55,10 +55,11 @@ const generateRefreshToken = async (token: string) => {
     [decoded.email]
   )
 
-  if ((await userData).rows.length === 0) throw new Error('user doesnt exists')
+  if ((await userData).rows.length === 0)
+    throw new AppError(404, 'user doesnt exists')
 
   const user = (await userData).rows[0]
-  if (!user?.is_active) throw new Error('forbidden')
+  if (!user?.is_active) throw new AppError(403, 'forbidden')
 
   const jwtPayload = {
     id: user.id,
@@ -75,6 +76,6 @@ const generateRefreshToken = async (token: string) => {
 }
 
 export const authService = {
-  loginIntoDB,
+  login: loginIntoDB,
   generateRefreshToken
 }
