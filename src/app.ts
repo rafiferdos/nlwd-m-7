@@ -14,13 +14,21 @@ app.use(express.json())
 app.use(express.text())
 app.use(express.urlencoded({ extended: true }))
 
-const corsOptions = {
-  origin: 'http://localhost:3000'
-}
-app.use(cors(corsOptions))
+app.use(
+  cors({
+    origin: process.env.ALLOWED_ORIGIN || '*',
+    credentials: true
+  })
+)
 
 app.use(logger)
 
+app.get('/', (req: Request, res: Response) => {
+  res.status(200).json({
+    message: 'server is ongoing',
+    creator: 'rafiferdos'
+  })
+})
 //* user route
 app.use('/api/users', userRoute)
 
@@ -30,11 +38,9 @@ app.use('/api/profiles', profileRoute)
 //* auth route
 app.use('/api/auth', authRoute)
 
-app.get('/', (req: Request, res: Response) => {
-  res.status(200).json({
-    message: 'server is ongoing',
-    creator: 'rafiferdos'
-  })
+//* 404
+app.use((req: Request, res: Response) => {
+  res.status(404).json({ success: false, message: 'Route not found' })
 })
 
 app.use(globalErrorHandler)
