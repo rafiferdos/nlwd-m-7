@@ -1,4 +1,4 @@
-import type { Request, RequestHandler, Response } from 'express'
+import type { Request, Response } from 'express'
 import sendResponse from '../../utility/sendResponse.js'
 import { authService } from './auth.service.js'
 
